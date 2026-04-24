@@ -7,7 +7,7 @@ class TopstoriesSpider(scrapy.Spider):
     allowed_domains = ["ycombinator.com/", "news.ycombinator.com/"]
     start_urls = ["https://news.ycombinator.com/news"]
     page_count = 0
-    max_pages = 100
+    max_pages = 5
 
     def parse(self, response):
         self.page_count += 1

@@ -21,15 +21,29 @@ def run_scrapy():
 def load_raw(): 
     etl_script = base_path / "etl" / "load_raw.py"
 
-    subprocess.run([sys.executable, str(etl_script), "etl/load_raw.py"], check = True, cwd=str(base_path))
+    subprocess.run(
+        [sys.executable, str(etl_script)], 
+        check = True, 
+        cwd=str(base_path))
 
 @task
 def transform_clean(): 
-    subprocess.run([sys.executable, "etl/transform_clean.py"], check = True)
+    transform_script = base_path / "etl" / "transform_clean.py"
+
+    subprocess.run(
+        [sys.executable, str(transform_script)],
+        check = True,
+        cwd=str(base_path)
+    )
 
 @task
 def build_analysis(): 
-    subprocess.run([sys.executable, "etl/build_analysis.py"], check = True)
+    build_script = base_path / "etl" / "build_analysis.py"
+    subprocess.run(
+        [sys.executable, str(build_script)],
+        check = True, 
+        cwd=str(base_path)
+    )
 
 @flow(name = "Hacker News Pipeline")
 def hn_pipeline(): 
