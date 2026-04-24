@@ -1,4 +1,11 @@
+# environment variables
 .env
+
+# python
 venv/
 __pycache__/
 *.pyc
+.venv/
+
+# prefect
+.prefect/
