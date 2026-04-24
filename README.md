@@ -25,6 +25,6 @@ pip install -r requirements.txt
 ```
 
 ## Dashboard Preview
-![Author Performance](./tableau/visuals/sheet2.png)
-![Avg Score Distribution](./tableau/visuals/sheet1.png)
+![Author Performance](./tableau/visuals/first_sheet.png)
+![Avg Score Distribution](./tableau/visuals/second_sheet.png)
 ![Articles Per Author](./tableau/visuals/sheet3.png)
