@@ -4,46 +4,38 @@ import sys
 from pathlib import Path
 from prefect import flow, task
 
-base_path = Path(__file__).parent.parent
+def run_script(path): 
+    base_path = Path(__file__).parent.parent
+    script_path = base_path / path
+
+    return subprocess.run(
+        [sys.executable, str(script_path)],
+        check = True, 
+        cwd = str(base_path)
+    )
 
 @task 
 def run_scrapy(): 
+    base_path = Path(__file__).parent.parent
     scrapy_dir = base_path / "scraping" / "hn_scraper"
-
-    print(f"Targeting Directory: {scrapy_dir}")
 
     subprocess.run(
         ["scrapy", "crawl", "topstories", "-O", "hn_raw.json"], 
         check = True, 
-        cwd=str(scrapy_dir))
+        cwd=str(scrapy_dir)
+    )
 
 @task 
 def load_raw(): 
-    etl_script = base_path / "etl" / "load_raw.py"
-
-    subprocess.run(
-        [sys.executable, str(etl_script)], 
-        check = True, 
-        cwd=str(base_path))
+    run_script("etl/load_raw.py")
 
 @task
 def transform_clean(): 
-    transform_script = base_path / "etl" / "transform_clean.py"
-
-    subprocess.run(
-        [sys.executable, str(transform_script)],
-        check = True,
-        cwd=str(base_path)
-    )
+    run_script("etl/transform_clean.py")
 
 @task
 def build_analysis(): 
-    build_script = base_path / "etl" / "build_analysis.py"
-    subprocess.run(
-        [sys.executable, str(build_script)],
-        check = True, 
-        cwd=str(base_path)
-    )
+    run_script("etl/build_analysis.py")
 
 @flow(name = "Hacker News Pipeline")
 def hn_pipeline(): 
